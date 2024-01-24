@@ -42,7 +42,11 @@
         });
 
         var urls = [
-      "https://vectortileservices.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated/VectorTileServer/tile/{z}/{y}/{x}.pbf",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/0",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/1",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/2",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/3",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/4",
       // Add more URLs here
     ];
 
@@ -61,8 +65,61 @@
 
   <body>
     <div id="viewDiv"></div>
- 
- 
+    <div id="layerControl"></div> <!-- Add this div for the checkboxes -->
+
+    <script>
+      require([
+        "esri/config", 
+        "esri/Map", 
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer"
+      ], function(esriConfig, Map, MapView, FeatureLayer) {
+
+        esriConfig.apiKey = "AAPK220ba579086140dea4e25f522bf00c8bG3Mb_Pd1g_KKKi94wj2H2lL_ceoaHcU25yTWEgLu20jkuceWo9_tPekrNz5Yr-nu";
+
+        var map = new Map({
+          basemap: "topo-vector"
+        });
+
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-89.5, 29.0],
+          zoom: 7
+        });
+
+        var urls = [
+          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/0",
+          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/1",
+          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/2",
+          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/3",
+          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/4"
+        ];
+
+        urls.forEach(function(url, index) {
+          var layer = new FeatureLayer({
+            url: url
+          });
+
+          map.add(layer);
+
+          // Create a checkbox for this layer
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = true;
+          checkbox.onchange = function() {
+            layer.visible = checkbox.checked;
+          };
+
+          // Add the checkbox to the layer control div
+          var label = document.createElement('label');
+          label.innerHTML = 'Layer ' + (index + 1);
+          document.getElementById('layerControl').appendChild(checkbox);
+          document.getElementById('layerControl').appendChild(label);
+          document.getElementById('layerControl').appendChild(document.createElement('br'));
+        });
+      });
+    </script>
   </body>
 
   
