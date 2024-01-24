@@ -65,62 +65,8 @@
 
   <body>
     <div id="viewDiv"></div>
-    <div id="layerControl"></div> <!-- Add this div for the checkboxes -->
-
-    <script>
-      require([
-        "esri/config", 
-        "esri/Map", 
-        "esri/views/MapView",
-        "esri/layers/FeatureLayer"
-      ], function(esriConfig, Map, MapView, FeatureLayer) {
-
-        esriConfig.apiKey = "YOUR_API_KEY";
-
-        var map = new Map({
-          basemap: "topo-vector"
-        });
-
-        var view = new MapView({
-          container: "viewDiv",
-          map: map,
-          center: [-89.5, 29.0],
-          zoom: 7
-        });
-
-        var urls = [
-          "URL_1",
-          "URL_2",
-          "URL_3",
-          "URL_4",
-          "URL_5"
-          // Add your URLs here
-        ];
-
-        urls.forEach(function(url, index) {
-          var layer = new FeatureLayer({
-            url: url
-          });
-
-          map.add(layer);
-
-          // Create a checkbox for this layer
-          var checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.checked = true;
-          checkbox.onchange = function() {
-            layer.visible = checkbox.checked;
-          };
-
-          // Add the checkbox to the layer control div
-          var label = document.createElement('label');
-          label.innerHTML = 'Layer ' + (index + 1);
-          document.getElementById('layerControl').appendChild(checkbox);
-          document.getElementById('layerControl').appendChild(label);
-          document.getElementById('layerControl').appendChild(document.createElement('br'));
-        });
-      });
-    </script>
+ 
+ 
   </body>
 
   
