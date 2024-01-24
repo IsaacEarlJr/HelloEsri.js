@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <meta charset="utf-8" />
@@ -9,82 +8,24 @@
     <style>
       html,
       body,
-      #viewDiv {
+      #viewDiv,
+      #map {
         padding: 0;
         margin: 0;
-        height: 100%;
+        height: 50%;
         width: 100%;
       }
     </style>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <script src="https://js.arcgis.com/4.28/"></script>
-
-    <script>
-      require([
-        "esri/config", 
-        "esri/Map", 
-        "esri/views/MapView",
-        "esri/layers/FeatureLayer"  // Include FeatureLayer here
-      ], function(esriConfig, Map, MapView, FeatureLayer) {  // Include FeatureLayer here
-
-        esriConfig.apiKey = "AAPK220ba579086140dea4e25f522bf00c8bG3Mb_Pd1g_KKKi94wj2H2lL_ceoaHcU25yTWEgLu20jkuceWo9_tPekrNz5Yr-nu";
-
-        var map = new Map({
-          basemap: "topo-vector"
-        });
-
-        var view = new MapView({
-          container: "viewDiv",
-          map: map,
-          center: [-89.5, 29.0],
-          zoom: 7
-        });
-
-        var urls = [
-      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/0",
-      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/1",
-      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/2",
-      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/3",
-      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/4",
-      // Add more URLs here
-    ];
-
-    urls.forEach(function(url) {
-      var layer = new FeatureLayer({
-        url: url
-      });
-
-      map.add(layer);
-    });
-  });
-</script>
-
-
-
-
-  <style>
-    #layerControl {                /*toggle layer visibility*/
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 10; /* Ensure it's above the map */
-      background: white;
-      padding: 10px;
-      border-radius: 3px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-  </style>
-
-
-
-
-</head>
-
-
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet"></script>
+  </head>
   <body>
     <div id="viewDiv"></div>
-    <div id="layerControl"></div> <!-- Add this div for the checkboxes -->
+    <div id="map"></div>
 
     <script>
       require([
@@ -107,47 +48,29 @@
           zoom: 7
         });
 
-
-        
-// Move the zoom controls to the bottom left
-view.ui.move("zoom", "bottom-left");
-
-
-        var urls = [
-          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/0",
-          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/1",
-          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/2",
-          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/3",
-          "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/4"
-        ];
-
-        urls.forEach(function(url, index) {
-          var layer = new FeatureLayer({
-            url: url
-          });
-
-          map.add(layer);
-
-          // Create a checkbox for this layer
-          var checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.checked = true;
-          checkbox.onchange = function() {
-            layer.visible = checkbox.checked;
-          };
-
-          // Add the checkbox to the layer control div
-          var label = document.createElement('label');
-          label.innerHTML = 'Layer ' + (index + 1);
-          document.getElementById('layerControl').appendChild(checkbox);
-          document.getElementById('layerControl').appendChild(label);
-          document.getElementById('layerControl').appendChild(document.createElement('br'));
+        // Add the Leaflet map
+        var OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         });
+
+        var Esri_WorldImagery = L.esri.basemapLayer('Imagery');
+
+        var leafletMap = L.map('map', {
+          center: [25.0000, -85.0000],
+          zoom: 6,
+          layers: [OpenStreetMap]
+        });
+
+        var baseMaps = {
+          "OpenStreetMap": OpenStreetMap,
+          "Esri WorldImagery": Esri_WorldImagery
+        };
+
+        L.control.layers(baseMaps).addTo(leafletMap);
+
+        var marker = L.marker([29.6516, -82.3248]).addTo(leafletMap);
       });
     </script>
-  
-
-</body>
-
-  
+  </body>
 </html>
