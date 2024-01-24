@@ -41,13 +41,24 @@
           zoom: 7
         });
 
-        var layer = new FeatureLayer({
-          url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer"
-        });
+        var urls = [
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/0",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/1",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/2",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/3",
+      "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Gulf_Lease_Updated2/FeatureServer/4",
+      // Add more URLs here
+    ];
 
-        map.add(layer);
+    urls.forEach(function(url) {
+      var layer = new FeatureLayer({
+        url: url
       });
-    </script>
+
+      map.add(layer);
+    });
+  });
+</script>
 
   </head>
   <body>
